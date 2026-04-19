@@ -50,7 +50,7 @@ services:
       - internal
 
 networks:
-  traefik-public:
+  traefik-network:
     external: true
   internal:
     driver: bridge
