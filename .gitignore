@@ -1,0 +1,21 @@
+# Env
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+dist/
+build/
+
+# Audio (don't commit to repo)
+music/downloads/
+music/uploads/
+music/exports/
+
+# Docker
+*.log
