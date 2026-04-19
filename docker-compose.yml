@@ -10,7 +10,7 @@ services:
       - "traefik.http.routers.djmix-front.tls.certresolver=letsencrypt"
       - "traefik.http.services.djmix-front.loadbalancer.server.port=80"
     networks:
-      - traefik-public
+      - traefik-network
       - internal
 
   backend:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - redis
     networks:
-      - traefik-public
+      - traefik-network
       - internal
 
   worker:
