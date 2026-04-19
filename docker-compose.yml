@@ -1,0 +1,56 @@
+services:
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.djmix-front.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.djmix-front.entrypoints=websecure"
+      - "traefik.http.routers.djmix-front.tls.certresolver=letsencrypt"
+      - "traefik.http.services.djmix-front.loadbalancer.server.port=80"
+    networks:
+      - traefik-public
+      - internal
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./music:/app/music
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.djmix-api.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.djmix-api.entrypoints=websecure"
+      - "traefik.http.routers.djmix-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.djmix-api.loadbalancer.server.port=8000"
+    depends_on:
+      - redis
+    networks:
+      - traefik-public
+      - internal
+
+  worker:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    command: celery -A workers.celery_app worker --loglevel=info
+    volumes:
+      - ./music:/app/music
+    depends_on:
+      - redis
+    networks:
+      - internal
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - internal
+
+networks:
+  traefik-public:
+    external: true
+  internal:
+    driver: bridge
