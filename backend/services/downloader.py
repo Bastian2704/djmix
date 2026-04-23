@@ -29,7 +29,6 @@ def _ydl_opts(hooks: list) -> dict:
         "quiet": True,
         "no_warnings": True,
         "progress_hooks": hooks,
-        "remote_components": "ejs:github",
         **_cookies_opt(),
     }
 
@@ -40,7 +39,6 @@ def get_playlist_entries(url: str) -> list[dict]:
         "extract_flat": True,
         "quiet": True,
         "ignoreerrors": True,
-        "remote_components": "ejs:github",
         **_cookies_opt(),
     }
     with yt_dlp.YoutubeDL(opts) as ydl:

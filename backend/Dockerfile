@@ -13,6 +13,10 @@ RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o 
 # Deno (JS runtime requerido por yt-dlp para resolver n-challenge de YouTube)
 RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
 
+# Config global de yt-dlp: habilita descarga del challenge solver desde GitHub
+RUN mkdir -p /root/.config/yt-dlp && \
+    echo "--remote-components ejs:github" > /root/.config/yt-dlp/config
+
 WORKDIR /app
 
 COPY requirements.txt .
