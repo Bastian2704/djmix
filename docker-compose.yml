@@ -36,6 +36,8 @@ services:
     restart: unless-stopped
     env_file: .env
     command: celery -A workers.celery_app worker --loglevel=info
+    environment:
+      - PYTHONPATH=/app
     volumes:
       - ./music:/app/music
     depends_on:
