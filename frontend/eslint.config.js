@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import globals from 'globals'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
@@ -17,6 +18,7 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: { ecmaFeatures: { jsx: true } },
+      globals: globals.browser,
     },
     plugins: {
       '@typescript-eslint': tseslint,
