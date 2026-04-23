@@ -8,7 +8,7 @@ import yt_dlp
 DOWNLOADS_DIR = Path("/app/music/downloads")
 
 
-_EXTRACTOR_ARGS = {"youtube": {"player_client": ["ios", "web"]}}
+_EXTRACTOR_ARGS = {"youtube": {"player_client": ["web", "tv_embedded"]}}
 
 
 def _ydl_opts(hooks: list) -> dict:
