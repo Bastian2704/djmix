@@ -8,6 +8,9 @@ import yt_dlp
 DOWNLOADS_DIR = Path("/app/music/downloads")
 
 
+_EXTRACTOR_ARGS = {"youtube": {"player_client": ["ios", "web"]}}
+
+
 def _ydl_opts(hooks: list) -> dict:
     DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
     return {
@@ -22,12 +25,18 @@ def _ydl_opts(hooks: list) -> dict:
         "quiet": True,
         "no_warnings": True,
         "progress_hooks": hooks,
+        "extractor_args": _EXTRACTOR_ARGS,
     }
 
 
 def get_playlist_entries(url: str) -> list[dict]:
     """Extract playlist entry list without downloading (fast)."""
-    opts = {"extract_flat": True, "quiet": True, "ignoreerrors": True}
+    opts = {
+        "extract_flat": True,
+        "quiet": True,
+        "ignoreerrors": True,
+        "extractor_args": _EXTRACTOR_ARGS,
+    }
     with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=False)
     if not info:
