@@ -19,6 +19,7 @@ services:
     env_file: .env
     volumes:
       - ./music:/app/music
+      - ./config:/app/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.djmix-api.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)"
@@ -40,6 +41,7 @@ services:
       - PYTHONPATH=/app
     volumes:
       - ./music:/app/music
+      - ./config:/app/config
     depends_on:
       - redis
     networks:

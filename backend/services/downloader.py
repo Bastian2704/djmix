@@ -6,9 +6,13 @@ from typing import Callable, Optional
 import yt_dlp
 
 DOWNLOADS_DIR = Path("/app/music/downloads")
+COOKIES_FILE = Path("/app/config/cookies.txt")
 
 
-_EXTRACTOR_ARGS = {"youtube": {"player_client": ["web", "tv_embedded"]}}
+def _cookies_opt() -> dict:
+    if COOKIES_FILE.exists():
+        return {"cookiefile": str(COOKIES_FILE)}
+    return {}
 
 
 def _ydl_opts(hooks: list) -> dict:
@@ -25,7 +29,7 @@ def _ydl_opts(hooks: list) -> dict:
         "quiet": True,
         "no_warnings": True,
         "progress_hooks": hooks,
-        "extractor_args": _EXTRACTOR_ARGS,
+        **_cookies_opt(),
     }
 
 
@@ -35,7 +39,7 @@ def get_playlist_entries(url: str) -> list[dict]:
         "extract_flat": True,
         "quiet": True,
         "ignoreerrors": True,
-        "extractor_args": _EXTRACTOR_ARGS,
+        **_cookies_opt(),
     }
     with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=False)
